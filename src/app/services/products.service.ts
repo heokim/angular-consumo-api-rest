@@ -5,7 +5,7 @@ import {
   HttpErrorResponse,
   HttpStatusCode,
 } from '@angular/common/http';
-import { retry, catchError } from 'rxjs/operators';
+import { retry, catchError, map } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 
 import {
@@ -31,7 +31,17 @@ export class ProductsService {
       params = params.set('limit', limit);
       params = params.set('offset', offset);
     }
-    return this.http.get<Product[]>(this.apiUrl, { params }).pipe(retry(3));
+    return this.http.get<Product[]>(this.apiUrl, { params }).pipe(
+      retry(3),
+      map((products) =>
+        products.map((item) => {
+          return {
+            ...item,
+            taxes: 0.1 * item.price,
+          };
+        })
+      )
+    );
   }
 
   getProdcductsByPage(limit: number, offset: number) {
@@ -39,7 +49,17 @@ export class ProductsService {
       .get<Product[]>(this.apiUrl, {
         params: { limit, offset },
       })
-      .pipe(retry(3));
+      .pipe(
+        retry(3),
+        map((products) =>
+          products.map((item) => {
+            return {
+              ...item,
+              taxes: 0.18 * item.price,
+            };
+          })
+        )
+      );
   }
 
   getProduct(id: string) {
