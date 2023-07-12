@@ -1,5 +1,5 @@
-<button (click)="toggleProductDetail()">
-  click
+<button (click)="createNewProduct()">
+  create
 </button>
 <div class="products--grid">
   <app-product [product]="product" *ngFor="let product of products" (addedProduct)="onAddToShoppingCart($event)"
