@@ -3,7 +3,13 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  // en un caso realista lo dejariamos vacio, pero ya que
+  // no tengo el Backend en mi maquina local uso simplmente
+  // la api practica que esta en el curso
+  // API_URL: '',
+  API_URL: 'https://api.escuelajs.co',
+
 };
 
 /*
