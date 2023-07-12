@@ -7,9 +7,14 @@ import { Product } from './../models/product.model';
   providedIn: 'root',
 })
 export class ProductsService {
+  private apiUrl = 'https://api.escuelajs.co/api/v1/products';
   constructor(private http: HttpClient) {}
 
   getAllProducts() {
-    return this.http.get<Product[]>('https://api.escuelajs.co/api/v1/products');
+    return this.http.get<Product[]>(this.apiUrl);
+  }
+
+  getProduct(id: string) {
+    return this.http.get<Product>(`${this.apiUrl}/${id}`);
   }
 }
