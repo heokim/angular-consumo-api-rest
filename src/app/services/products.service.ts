@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 
 import {
   CreateProductDTO,
@@ -14,8 +14,19 @@ export class ProductsService {
   private apiUrl = 'https://api.escuelajs.co/api/v1/products';
   constructor(private http: HttpClient) {}
 
-  getAllProducts() {
-    return this.http.get<Product[]>(this.apiUrl);
+  getAllProducts(limit?: number, offset?: number) {
+    let params = new HttpParams();
+    if (limit && offset) {
+      params = params.set('limit', limit);
+      params = params.set('offset', offset);
+    }
+    return this.http.get<Product[]>(this.apiUrl, { params });
+  }
+
+  getProdcductsByPage(limit: number, offset: number) {
+    return this.http.get<Product[]>(this.apiUrl, {
+      params: { limit, offset },
+    });
   }
 
   getProduct(id: string) {
