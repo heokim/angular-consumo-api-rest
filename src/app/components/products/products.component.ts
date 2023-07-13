@@ -9,6 +9,8 @@ import {
 import { StoreService } from '../../services/store.service';
 import { ProductsService } from '../../services/products.service';
 
+import { switchMap } from 'rxjs/operators';
+
 @Component({
   selector: 'app-products',
   templateUrl: './products.component.html',
@@ -71,6 +73,32 @@ export class ProductsComponent implements OnInit {
         this.statusDetail = 'error';
       }
     );
+  }
+
+  // Como evitar Callback Hell
+  // si tiene dependencia usar .pipe(switchMap(() =>{})
+  // si tiene distintas peticiones en paralelo usar zip(fetch1, fetch2)
+  // se Recomienda escribir estas logicas en el Service porque puede ser reutilizable
+  readAndUpdate(id: string) {
+    this.productsService
+      .getProduct(id)
+      .pipe(
+        switchMap((product) =>
+          this.productsService.update(product.id, { title: 'changes' })
+        )
+      )
+      .subscribe((data) => {
+        console.log(data);
+      });
+
+    this.productsService
+      .fetchReadAndUpdate(id, { title: 'Nuevo' })
+      .subscribe((response) => {
+        const readProducto = response[0];
+        const updatedProduct = response[1];
+        console.log(readProducto);
+        console.log(updatedProduct);
+      });
   }
 
   createNewProduct() {
