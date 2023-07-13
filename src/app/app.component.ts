@@ -11,10 +11,7 @@ export class AppComponent {
   imgParent = '';
   showImg = true;
 
-  constructor(
-    private authService: AuthService,
-    private usersService: UsersService
-  ) {}
+  constructor(private usersService: UsersService) {}
 
   onLoaded(img: string) {
     console.log('log padre', img);
@@ -34,12 +31,5 @@ export class AppComponent {
       .subscribe((rta) => {
         console.log(rta);
       });
-  }
-
-  login() {
-    this.authService.login('maria@mail.com', '12345')
-    .subscribe((rta) => {
-      console.log(rta.access_token);
-    });
   }
 }
