@@ -36,17 +36,12 @@ export class NavComponent implements OnInit {
   }
 
   login() {
-    this.authService.login('maria@mail.com', '12345').subscribe((rta) => {
-      // console.log(rta.access_token);
-      this.token = rta.access_token;
-      this.getProfile();
-    });
-  }
+    this.authService
+      .loginAndGetProfile('maria@mail.com', '12345')
+      .subscribe((user) => {
+        this.user = user;
+        console.log(user);
 
-  getProfile() {
-    this.authService.profile(this.token).subscribe((profile) => {
-      // console.log(profile);
-      this.user = profile;
-    });
+      });
   }
 }
